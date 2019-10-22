@@ -727,6 +727,7 @@ export default {
     },
 
     grandTotal1() {
+      console.log(this.selectedOrder)
       let total = (this.transactions[this.selectedOrder].Orders.length !== 0) ? 
         this.transactions[this.selectedOrder].Orders.map(e => parseFloat((e.discount !== 0? e.discount: e.itemCost || 0)) * parseFloat((e.qty || 0)).toFixed(2))
           .reduce((total, num) => (parseFloat((total || 0)) + parseFloat((num || 0))))
@@ -746,7 +747,7 @@ export default {
     },
 
     selectedOrder (val) {
-      console.log(this.transactions[val])
+      console.log(this.selectedOrder)
     },
 
     selected (val) {
@@ -797,14 +798,14 @@ export default {
     // },
 
     user_payment (val) {
-      this.payment_option = parseFloat(val) == parseFloat(!this.hasBalance? this.grand_total.toFixed(2): (parseFloat(this.grandTotal1) - parseFloat(this.totalPayment)).toFixed(2))? '1': '2'
-      this.payment_error = parseFloat(val).toFixed(2) <= parseFloat(!this.hasBalance? this.grand_total.toFixed(2): (parseFloat(this.grandTotal1) - parseFloat(this.totalPayment)).toFixed(2))
+      this.payment_option = parseFloat(val) == parseFloat(!this.hasBalance? parseFloat(this.grand_total).toFixed(2): (parseFloat(this.grandTotal1) - parseFloat(this.totalPayment)).toFixed(2))? '1': '2'
+      this.payment_error = parseFloat(val).toFixed(2) <= parseFloat(!this.hasBalance? parseFloat(this.grand_total).toFixed(2): (parseFloat(this.grandTotal1) - parseFloat(this.totalPayment)).toFixed(2))
     },
 
     checkout_d (val) {
       // if (val) {
         this.payment_option = '1'
-        this.user_payment = this.hasBalance === false? this.payment_option == 1? this.grand_total.toFixed(2) : (parseFloat(this.grand_total) / 2).toFixed(2) : this.payment_option == 1? (parseFloat(this.grandTotal1) - parseFloat(this.totalPayment)).toFixed(2) : ((parseFloat(this.grandTotal1) - parseFloat(this.totalPayment)) / 2).toFixed(2) 
+        this.user_payment = this.hasBalance === false? this.payment_option == 1? parseFloat(this.grand_total).toFixed(2) : (parseFloat(this.grand_total) / 2).toFixed(2) : this.payment_option == 1? (parseFloat(this.grandTotal1) - parseFloat(this.totalPayment)).toFixed(2) : ((parseFloat(this.grandTotal1) - parseFloat(this.totalPayment)) / 2).toFixed(2) 
       // }
     },
 
@@ -837,7 +838,7 @@ export default {
 
     paymentChange (event) {
       console.log(this.grand_total)
-      this.user_payment = this.hasBalance === false? event == 1? this.grand_total.toFixed(2) : (parseFloat(this.grand_total) / 2).toFixed(2) : event == 1? (parseFloat(this.grandTotal1) - parseFloat(this.totalPayment)).toFixed(2) : ((parseFloat(this.grandTotal1) - parseFloat(this.totalPayment)) / 2).toFixed(2) 
+      this.user_payment = this.hasBalance === false? event == 1? parseFloat(this.grand_total).toFixed(2) : (parseFloat(this.grand_total) / 2).toFixed(2) : event == 1? (parseFloat(this.grandTotal1) - parseFloat(this.totalPayment)).toFixed(2) : ((parseFloat(this.grandTotal1) - parseFloat(this.totalPayment)) / 2).toFixed(2) 
     },
 
     changeDiscount (discount) {
@@ -1086,5 +1087,9 @@ export default {
 
   .v-text-field__details {
     overflow: visible;
+  }
+
+  .v-input__control {
+    width: 100% !important;
   }
 </style>
