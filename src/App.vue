@@ -4,14 +4,14 @@
     <core-windowControls /> 
 
     <!-- Login Component -->
-    <div style="height: calc(100% - 32px)" v-if="!isLoggedIn">
+    <div style="height: 100%; padding-top: 32px;position: relative" v-if="!isLoggedIn">
 
       <core-view />
 
     </div>
 
     <!-- IMS Component -->
-    <div style="height: calc(100% - 120px)" v-else>
+    <div id="con" style="height: 100%; padding-top: 32px;position: relative" v-else>
 
       <core-toolbar />
 
@@ -50,8 +50,9 @@ html{
 }
 
 .application--wrap {
-  display: flex;
-  flex-direction: column;
+  // display: flex;
+  // flex-direction: column;
+  // padding-top: 32px;
   height: 100vh;
 }
 
@@ -96,5 +97,9 @@ html{
 
 #group_payment .v-radio {
   margin: 0 auto 8px auto;
+}
+
+#group_payment .v-input__control {
+  width: 100%;
 }
 </style>

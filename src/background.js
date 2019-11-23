@@ -1,5 +1,5 @@
 'use strict'
-// require("./server/server")
+require("./server/server")
 
 // const Sequelize = require('sequelize');
 // const sqlite3 = require('sqlite3')

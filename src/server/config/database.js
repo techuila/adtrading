@@ -6,8 +6,9 @@ const sequelize = new Sequelize({
   dialect: 'sqlite',
   dialectModule: sqlite3,
   // storage: path.resolve(__dirname, '../src/server/config/db.sqlite') // ON PRODUCTION
-  storage: path.resolve(__dirname, '../config/db.sqlite') // ON DEVELOPMENT
+  storage: path.resolve(__dirname, '../config/db.sqlite'), // ON DEVELOPMENT
   // storage: `file:${__dirname, '../config/db.sqlite'}?node=primary&bind=tcp://0.0.0.0:1234` // ON CLOUD
+  logging: false
 });
 
 const models = {

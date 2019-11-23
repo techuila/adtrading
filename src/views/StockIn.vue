@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="height: 100%;">
     <v-flex
       xs3
       md3
@@ -18,8 +18,8 @@
           >
           </v-text-field>
         </v-flex>
-        <v-list two-line>
-          <smooth-scrollbar :options='{alwaysShowTracks: true}' style="height: 77.5vh;">
+        <v-list style="height: calc(100% - 155px);" two-line>
+          <smooth-scrollbar :options='{alwaysShowTracks: true}' style="height: 100%;">
             <template v-for="(item, index) in transactions.filter(e => ( !!!(e.SupCust.firstName + ' ' + e.SupCust.lastName).toLowerCase().search(search.toLowerCase()) || !!!(e.receiptNumber).toLowerCase().search(search.toLowerCase()) || !!!(e.status).toLowerCase().search(search.toLowerCase())))">
               <v-list-tile
                 :key="item.title"
@@ -138,7 +138,7 @@
                     <span style="display: block; font-weight: 500; margin-top: 5px;">Total:</span>
                   </div>
                   <div style="display: inline-block; float: right">
-                    <span style="display: block; font-weight: 500; text-align: right; margin-top: 5px;">₱{{ grandTotal }}</span>
+                    <span style="display: block; font-weight: 500; text-align: right; margin-top: 5px;">₱{{ parseFloat(grandTotal).toLocaleString(undefined, {minimumFractionDigits: 2}) }}</span>
                   </div>
                 </v-flex>
                 <v-flex xs12 md12 v-if="active == 1 && hasBalance" style="text-align: center;">
@@ -176,7 +176,7 @@
                     <v-radio color="info" label="Full Payment" value="1" />
                     <v-radio color="info" label="P.O" value="2" />
                   </v-radio-group>
-                  <v-text-field :disabled="payment_option == 1" style="text-align: right;" prefix="₱" id="user_payment" label="Customer Payment" ref="user_payment" v-model="user_payment" :rules="[v => parseFloat(v) >= 0 ? parseFloat(v) <= parseFloat(!hasBalance? grandTotal: (parseFloat(grandTotal1) - parseFloat(totalPayment))) || 'Payment Exceeds Full Payment!': 'Invalid payment!']" required/>
+                  <v-text-field :disabled="payment_option == 1" style="text-align: right;" prefix="₱" id="user_payment" label="Customer Payment" ref="user_payment" v-model="user_payment" :rules="[v => parseFloat(v) >= 0 ? parseFloat(v) <= parseFloat(!hasBalance? grandTotal.replace(/,/g, ''): (parseFloat(grandTotal1) - parseFloat(totalPayment))) || 'Payment Exceeds Full Payment!': 'Invalid payment!']" required/>
                   <v-text-field  style="text-align: right;" prefix="₱" id="user_payment" label="Amount Received" ref="amount_received" v-model="amount_received" :rules="[v => parseFloat(v) >= parseFloat(user_payment) || 'Insufficient Amount']" required/>
                 </v-flex>
                 <v-flex xs12 md12>
@@ -192,14 +192,14 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="green darken-1" flat="flat" @click.native="checkout_d = false">Cancel</v-btn>
-            <v-btn type="submit" color="green darken-1" flat="flat" :disabled="!payment_error">Save</v-btn>
-            <v-btn type="submit" color="green darken-1" flat="flat" :disabled="!payment_error">Print & save</v-btn>
+            <v-btn type="submit" color="green darken-1" flat="flat" :disabled="parseFloat(amount_received || 0) < parseFloat(user_payment)">Save</v-btn>
+            <v-btn type="submit" color="green darken-1" flat="flat" :disabled="parseFloat(amount_received || 0) < parseFloat(user_payment)">Print & save</v-btn>
           </v-card-actions>
         </v-card>
       </v-form>
     </v-dialog>
 
-    <smooth-scrollbar :options='{alwaysShowTracks: true}' style="height: 87.5vh;">
+    <smooth-scrollbar :options='{alwaysShowTracks: true}' style="height: 100%;">
       <v-container
         fill-height
         fluid
@@ -221,6 +221,8 @@
                 >     
                   <v-flex xs11 md11 style="padding-top: 0;">
                     <h4 style="font-weight: 400 !important; display: inline-block;">{{ title }}</h4> <small v-if="!addOrder" :style="{color: statusPayment(transactions[selected])}"> ({{ statusPayment(transactions[selected]) === 'orange' ? 'Pending Balance' : ' Fully Paid' }})</small>
+                      <span style="margin-left: 60px; font-weight: 400;" v-if="selected !== -1? transactions[selected].due_date: false">Due Date: <span style="color: orange;">{{ selected !== -1 ? transactions[selected].due_date : '' }}</span></span>
+
                   </v-flex>
 
                   <v-flex xs1 md1 style="padding-top: 0;" v-if="!addOrder && transactions[selected].status === 'Pending'">
@@ -430,7 +432,7 @@
                         </td>
                         <td colspan="2" style="padding: 12px 8px;">
                           <!-- <strong>₱0.00</strong><br /> -->
-                          <strong style="font-size: 14px;">₱ {{ (addOrder)? grandTotal: grandTotal1 }}</strong><br />
+                          <strong style="font-size: 14px;">₱ {{ (addOrder)? parseFloat(grandTotal).toLocaleString(undefined, {minimumFractionDigits: 2}) : parseFloat(grandTotal1).toLocaleString(undefined, {minimumFractionDigits: 2}) }}</strong><br />
                         </td>
                       </template>
                     </v-data-table>
@@ -463,7 +465,7 @@
                           <strong>Balance</strong><br />
                         </td>
                         <td colspan="1" style="padding: 12px 8px;">
-                          <strong>₱{{ totalPayment.toLocaleString(undefined, { minimumFractionDigits: 2 }) }}</strong><br />
+                          <strong>₱{{ parseFloat(totalPayment).toLocaleString(undefined, { minimumFractionDigits: 2 }) }}</strong><br />
                           <strong style="font-size: 14px; color: red !important;">₱ {{ (grandTotal1 - totalPayment).toLocaleString(undefined, { minimumFractionDigits: 2 }) }}</strong><br />
                         </td>
                         <td colspan="3"></td>
@@ -547,7 +549,7 @@
                     </td>
                     <td colspan="2" style="padding: 12px 8px;">
                       <strong>₱0.00</strong><br />
-                      <strong style="font-size: 14px;">₱ {{ (addOrder)? grandTotal: grandTotal1 }}</strong><br />
+                      <strong style="font-size: 14px;">₱ {{ (addOrder)? parseFloat(grandTotal).toLocaleString(undefined, {minimumFractionDigits: 2}) : parseFloat(grandTotal1).toLocaleString(undefined, {minimumFractionDigits: 2})  }}</strong><br />
                     </td>
                   </template>
                 </v-data-table>
@@ -671,7 +673,8 @@ export default {
     },
 
     totalPayment() {
-      return this.transactions[this.selected].Payments.length !== 0? this.transactions[this.selectedOrder].Payments.map(e => e.customer_payment).reduce((total, num) => (parseFloat((total || 0)) + parseFloat((num || 0)))).toFixed(2) : 0
+      console.log(this.transactions)
+      return this.transactions[this.selected].Payments.length !== 0? this.transactions[this.selected].Payments.map(e => e.customer_payment).reduce((total, num) => (parseFloat((total || 0)) + parseFloat((num || 0)))).toFixed(2) : 0
     }
   },
 
@@ -701,6 +704,14 @@ export default {
       }
     },
 
+    selected (val) {
+      if (val === -1)
+        this.date = null
+
+      
+        console.log(this.date)
+    },  
+
     'supcust' (val) {
       if (val) 
         this.editedItem.supCustID = val[0].id
@@ -712,17 +723,20 @@ export default {
     },
 
     user_payment (val) {
-      this.payment_option = parseFloat(val) == parseFloat(!this.hasBalance? this.grandTotal : (parseFloat(this.grandTotal1) - parseFloat(this.totalPayment)).toFixed(2))? '1': '2'
-      this.payment_error = parseFloat(val).toFixed(2) <= parseFloat(!this.hasBalance? this.grandTotal : (parseFloat(this.grandTotal1) - parseFloat(this.totalPayment)).toFixed(2))
+      this.payment_option = parseFloat(val) == parseFloat(!this.hasBalance? this.grandTotal.replace(/,/g, '') : (parseFloat(this.grandTotal1) - parseFloat(this.totalPayment)).toFixed(2))? '1': '2'
+      console.log(val)
+      console.log(parseFloat(val).toFixed(2)) >= parseFloat(this.amount_received).toFixed(2)
+      // this.payment_error = parseFloat(val).toFixed(2) >= parseFloat(this.amount_received).toFixed(2)
+      // parseFloat(!this.hasBalance? parseFloat(this.amount_received) - parseFloat(this.grandTotal.replace(/,/g, '')) : (parseFloat(this.amount_received) - (parseFloat(this.grandTotal1) - parseFloat(this.totalPayment))).toFixed(2))
     },
 
     checkout_d (val) {
-      // if (val) {
+      if (val) {
         console.log(this.grandTotal)
         this.payment_option = '1'
-        this.user_payment = this.hasBalance === false? this.payment_option == 1? this.grandTotal : (parseFloat(this.grandTotal) / 2).toFixed(2) : this.payment_option == 1? (parseFloat(this.grandTotal1) - parseFloat(this.totalPayment)).toFixed(2) : ((parseFloat(this.grandTotal1) - parseFloat(this.totalPayment)) / 2).toFixed(2) 
+        this.user_payment = this.hasBalance === false? this.payment_option == 1? this.grandTotal.replace(/,/g, '') : (parseFloat(this.grandTotal.replace(/,/g, '')) / 2).toFixed(2) : this.payment_option == 1? (parseFloat(this.grandTotal1) - parseFloat(this.totalPayment)).toFixed(2) : ((parseFloat(this.grandTotal1) - parseFloat(this.totalPayment)) / 2).toFixed(2) 
         console.log(this.user_payment)
-      // }
+      }
     },
   },
 
@@ -747,8 +761,14 @@ export default {
     },
 
     paymentChange (event) {
-      console.log(this.grandTotal)
-      this.user_payment = this.hasBalance === false? event == 1? parseFloat(this.grandTotal).toFixed(2) : (parseFloat(this.grandTotal) / 2).toFixed(2) : event == 1? (parseFloat(this.grandTotal1) - parseFloat(this.totalPayment)).toFixed(2) : ((parseFloat(this.grandTotal1) - parseFloat(this.totalPayment)) / 2).toFixed(2) 
+      console.log(parseFloat(this.grandTotal).toFixed(2))
+      console.log(this.hasBalance)
+      console.log(event)
+      console.log(this.user_payment)
+      this.user_payment = this.hasBalance === false? 
+        event == 1? parseFloat(this.grandTotal.replace(/,/g, '')).toFixed(2) : (parseFloat(this.grandTotal.replace(/,/g, '')) / 2).toFixed(2) 
+      : event == 1? (parseFloat(this.grandTotal1) - parseFloat(this.totalPayment)).toFixed(2) : ((parseFloat(this.grandTotal1) - parseFloat(this.totalPayment)) / 2).toFixed(2) 
+
     },
 
     statusPayment (item) {
@@ -765,6 +785,7 @@ export default {
 
       this.active = 1
       this.selected = index
+      this.date = this.transactions[index].due_date
       this.close()
       console.log(index)
     },
@@ -785,12 +806,13 @@ export default {
     },
 
     close () {
+      this.checkout_d = false
       this.addOrder = false; 
       setTimeout(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedItem.supCustID = this.supcust[0].id
         this.editedIndex = -1
-        this.products = [];
+        this.products = []
       }, 300)
     },
 
@@ -801,6 +823,7 @@ export default {
           Orders: [...this.products], 
           userID: this.user.id, 
           type: 'IN', 
+          due_date: this.date,
           status: this.payment_option == 1 ? 'Pending' : 'Pending Balance',
           payment: false, 
           Payments: [{ 
@@ -812,9 +835,11 @@ export default {
           id: this.transactions[this.selected].id,
           payment: true, 
           type: 'IN', 
+          due_date: this.date,
+          Orders: [...this.transactions[this.selected].Orders],
           status: parseFloat(this.user_payment) == (parseFloat(this.grandTotal1) - parseFloat(this.totalPayment))? this.transactions[this.selected].status === 'Pending Balance'? 'Pending': 'Received': this.transactions[this.selected].status,
           Payments: [{
-            transaction_id: this.transactions[this.selectedOrder].id,
+            transaction_id: this.transactions[this.selected].id,
             customer_payment: this.user_payment, 
             amount_received: this.amount_received, 
             customer_change: (parseFloat(this.amount_received) - parseFloat(this.user_payment)).toFixed(2)
@@ -823,11 +848,15 @@ export default {
 
         this.$store.dispatch('CREATE_STOCKIN', { ...payload }).then(e => {
           this.close()
-          this.selected = -1
+          if (this.addOrder)
+            this.selected = -1
+          else
+            this.activeTab = 1 
         }).catch(error => {
           if (error)
             this.error.receiptNumber = error.msg
-        })        
+        })     
+        
       }
     }
   }

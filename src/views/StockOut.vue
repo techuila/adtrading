@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="height: 100%;">
     <v-flex
       xs3
       md3
@@ -166,8 +166,8 @@
               >
               </v-text-field>
             </v-flex>
-            <v-list two-line>
-              <smooth-scrollbar :options='{alwaysShowTracks: true}' style="height: 77.5vh;">
+            <v-list style="height: calc(100vh - 210px); padding: 0;" two-line>
+              <smooth-scrollbar :options='{alwaysShowTracks: true}' style="height: 100%;">
                 <template v-for="(item, index) in transactions.filter(e => ( !!!(e.SupCust.firstName).toLowerCase().search(search.toLowerCase()) || !!!(e.SupCust.lastName).toLowerCase().search(search.toLowerCase()) || !!!(e.receiptNumber).toLowerCase().search(search.toLowerCase()) || !!!(e.status).toLowerCase().search(search.toLowerCase())))">
                   <v-list-tile
                     :key="item.title"
@@ -308,8 +308,8 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="green darken-1" flat="flat" @click.native="checkout_d = false">Cancel</v-btn>
-            <v-btn type="submit" color="green darken-1" flat="flat" :disabled="!payment_error">Save</v-btn>
-            <v-btn type="submit" color="green darken-1" flat="flat" :disabled="!payment_error">Print & save</v-btn>
+            <v-btn type="submit" color="green darken-1" flat="flat" :disabled="parseFloat(amount_received || 0) < parseFloat(user_payment)">Save</v-btn>
+            <v-btn type="submit" color="green darken-1" flat="flat" :disabled="parseFloat(amount_received || 0) < parseFloat(user_payment)">Print & save</v-btn>
           </v-card-actions>
         </v-card>
       </v-form>

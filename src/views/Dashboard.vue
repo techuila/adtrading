@@ -4,6 +4,7 @@
       fill-height
       fluid
       grid-list-xl
+      style="background-color: #fafafa;"
     >
       <v-layout wrap>
         <v-flex

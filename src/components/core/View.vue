@@ -21,17 +21,23 @@ export default {
 <style>
 #core-view {
   /* padding-bottom: 100px; */
+  /* height: 100%;  */
 }
 
 .c-scroll-view__content {
-  height: 100% !important;
+  /* height: 100vh !important; */
 }
 
 .c-scroll-view, .v-content__wrap, #core-view, .v-content {
   height: 100%;
+  display: block;
+}
+
+#con .v-content {
+  padding: 60px 0px 0px 260px !important;
 }
 
 .c-scroll-view {
-  height: 104%;
+  /* height: 100vh; */
 }
 </style>

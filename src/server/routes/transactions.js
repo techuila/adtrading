@@ -69,6 +69,8 @@ router.post('/',  async (req, res) => {
           WHERE id = ${e.itemID};
         `)
       })
+    } else if (type === 'IN' && (status === 'Received' || status === 'Received w/ Pending Balance')) {
+      updateItems(models, Orders)
     }
 
     data.setDataValue('Orders', await data.getOrders().map(async e => {
@@ -89,22 +91,7 @@ router.put('/',  async (req, res) => {
     const { orders } = req.body
     const data = await upsert(models.Transaction, req.body)
 
-    orders.forEach(async e => {
-      const itemCost = (e.itemCost * 2) + e.itemCost
-      await models.sequelize.query(`
-        UPDATE item_list 
-        SET qtyIn = qtyIn + ${e.qty}, 
-        unit_price = 
-        CASE 
-          WHEN (unit_price < ${itemCost} AND qtyIn - qtyOut != 0) OR (qtyIn - qtyOut = 0)  THEN
-            ${itemCost}
-          ELSE
-            unit_price 
-        END
-        WHERE id = ${e.itemID};
-        SELECT * FROM item_list WHERE id = ${e.itemID}
-      `)
-    })
+    updateItems(models, orders)
 
     data.setDataValue('Orders', await data.getOrders().map(async e => {
       e.setDataValue('Items', await models.ItemList.findOne({ where: { id: e.get().itemID } }))
@@ -117,6 +104,27 @@ router.put('/',  async (req, res) => {
     res.status(400).json({ msg: error })
   }
 });
+
+async function updateItems(models, orders) {
+  console.log('halakasha')
+  console.log(orders)
+  orders.forEach(async e => {
+    const itemCost = (e.itemCost * 2) + e.itemCost
+    await models.sequelize.query(`
+      UPDATE item_list 
+      SET qtyIn = qtyIn + ${e.qty}, 
+      unit_price = 
+      CASE 
+        WHEN (unit_price < ${itemCost} AND qtyIn - qtyOut != 0) OR (qtyIn - qtyOut = 0)  THEN
+          ${itemCost}
+        ELSE
+          unit_price 
+      END
+      WHERE id = ${e.itemID};
+      SELECT * FROM item_list WHERE id = ${e.itemID}
+    `)
+  })
+}
 
 function validate (receiptNumber, type) {
   return new Promise(async (resolve, reject) => {

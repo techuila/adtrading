@@ -32,6 +32,10 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.TEXT,
 			allowNull: true
 		},
+		due_date: {
+			type: DataTypes.TEXT,
+			allowNull: true
+		},
 		createdAt: {
 			type: DataTypes.DATE,
 			defaultValue: new Date(),

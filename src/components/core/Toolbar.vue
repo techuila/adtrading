@@ -159,4 +159,9 @@ export default {
     margin-bottom: 0 !important;
     transition: all 100ms ease-in;
   }
+
+  .v-toolbar {
+    position: fixed !important;
+    top: 32px;
+  }
 </style>

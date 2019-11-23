@@ -27,5 +27,6 @@ export default {
 <style>
 #core-footer {
   z-index: 0;
+  background-color: #fff;
 }
 </style>

@@ -7,9 +7,9 @@
     />
     <div id="title">AD Trading Inventory Management System</div>
     <div id="title-bar-btns">
-      <button @click="windowsControl(0)" id="min-btn">&#xE921;</button>
-      <button @click="windowsControl(1)" id="max-btn">&#xE922;</button>
-      <button @click="windowsControl(2)" id="close-btn">&#xE8BB;</button>
+      <button @click="windowsControl(0)" id="min-btn">&square;</button>
+      <button @click="windowsControl(1)" id="max-btn">&#95;</button>
+      <button @click="windowsControl(2)" id="close-btn">&times;</button>
     </div>
   </div>
 </template>
@@ -42,12 +42,15 @@
 <style scoped>
   #title-bar {
     -webkit-app-region: drag;
-    flex: 0 0 32px; 
+    /* flex: 0 0 32px;  */
     width: 100%;
     font-size: 12px;
     color: #eee;
     background-color: #424242;
     z-index: 4;
+    height: 32px;
+    position: fixed;
+    top: 0; left: 0; right: 0;
   }
   
   .v-image {
