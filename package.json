@@ -43,7 +43,7 @@
     "@vue/cli-service": "^3.0.1",
     "@vue/eslint-config-standard": "^3.0.1",
     "axios": "^0.17.1",
-    "electron": "^5.0.0",
+    "electron": "^9.1.0",
     "electron-rebuild": "^1.8.5",
     "material-design-icons-iconfont": "^3.0.3",
     "nodemon": "^1.19.1",
