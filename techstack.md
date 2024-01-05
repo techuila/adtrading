@@ -1,7 +1,8 @@
 <!--
---- Readme.md Snippet without images Start ---
+&lt;--- Readme.md Snippet without images Start ---&gt;
 ## Tech Stack
 techuila/adtrading is built on the following main stack:
+
 - [MySQL](http://www.mysql.com) – Databases
 - [SQLite](http://www.sqlite.org/) – Databases
 - [ExpressJS](http://expressjs.com/) – Microframeworks (Backend)
@@ -18,11 +19,13 @@ techuila/adtrading is built on the following main stack:
 - [vuex](https://vuex.vuejs.org) – State Management Library
 
 Full tech stack [here](/techstack.md)
---- Readme.md Snippet without images End ---
 
---- Readme.md Snippet with images Start ---
+&lt;--- Readme.md Snippet without images End ---&gt;
+
+&lt;--- Readme.md Snippet with images Start ---&gt;
 ## Tech Stack
 techuila/adtrading is built on the following main stack:
+
 - <img width='25' height='25' src='https://img.stackshare.io/service/1025/logo-mysql-170x170.png' alt='MySQL'/> [MySQL](http://www.mysql.com) – Databases
 - <img width='25' height='25' src='https://img.stackshare.io/service/1071/sqlite.jpg' alt='SQLite'/> [SQLite](http://www.sqlite.org/) – Databases
 - <img width='25' height='25' src='https://img.stackshare.io/service/1163/hashtag.png' alt='ExpressJS'/> [ExpressJS](http://expressjs.com/) – Microframeworks (Backend)
@@ -39,14 +42,15 @@ techuila/adtrading is built on the following main stack:
 - <img width='25' height='25' src='https://img.stackshare.io/service/6705/6128107.png' alt='vuex'/> [vuex](https://vuex.vuejs.org) – State Management Library
 
 Full tech stack [here](/techstack.md)
---- Readme.md Snippet with images End ---
+
+&lt;--- Readme.md Snippet with images End ---&gt;
 -->
 <div align="center">
 
 # Tech Stack File
 ![](https://img.stackshare.io/repo.svg "repo") [techuila/adtrading](https://github.com/techuila/adtrading)![](https://img.stackshare.io/public_badge.svg "public")
 <br/><br/>
-|39<br/>Tools used|11/15/23 <br/>Report generated|
+|39<br/>Tools used|01/05/24 <br/>Report generated|
 |------|------|
 </div>
 
@@ -244,4 +248,4 @@ Full tech stack [here](/techstack.md)
 <br/>
 <div align='center'>
 
-Generated via [Stack File](https://github.com/apps/stack-file)
+Generated via [Stack File](https://github.com/marketplace/stack-file)
